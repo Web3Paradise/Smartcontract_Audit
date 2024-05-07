@@ -13,7 +13,7 @@ contract SampleContract {
         balance += 1;
     }
 
-    function transfer(address _to) public {
+    function transfer(address payable _to) public {
         if (msg.sender == owner) {
             _to.transfer(balance);
         }
