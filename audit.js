@@ -9,7 +9,7 @@ const provider = new ethers.providers.JsonRpcProvider('https://mainnet.infura.io
 const contractCode = fs.readFileSync('contract.sol', 'utf8');
 
 // Compile the contract code using solc
-const compiledContract = solc.compile(contractCode, 1);
+const compiledContract = solc.compile(contractCode);
 
 // Get the contract ABI and bytecode
 const contractABI = compiledContract.contracts['contract.sol'].abi;
@@ -241,4 +241,4 @@ function checkModifiers(abi) {
     }
   }
   return modifierFunctions.length > 0? `Unprotected use of modifiers detected in functions: ${modifierFunctions.join(', ')}` : 'No unprotected use of modifiers detected';
-      }
+}
