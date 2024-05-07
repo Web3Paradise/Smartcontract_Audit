@@ -11,60 +11,64 @@ const contractCode = fs.readFileSync('contract.sol', 'utf8');
 // Compile the contract code using solc
 const compiledContract = solc.compile(contractCode);
 
-// Get the contract ABI and bytecode
-const contractABI = compiledContract.contracts['contract.sol'].abi;
-const contractBytecode = compiledContract.contracts['contract.sol'].bytecode;
+// Check if the contract code was compiled successfully
+if (compiledContract && compiledContract.contracts && compiledContract.contracts['contract.sol']) {
+  const contractABI = compiledContract.contracts['contract.sol'].abi;
+  const contractBytecode = compiledContract.contracts['contract.sol'].bytecode;
 
-// Audit the contract for security vulnerabilities and performance issues
-const auditResults = {};
+  // Audit the contract for security vulnerabilities and performance issues
+  const auditResults = {};
 
-// 1. Reentrancy vulnerability
-auditResults.reentrancy = checkReentrancy(contractABI);
+  // 1. Reentrancy vulnerability
+  auditResults.reentrancy = checkReentrancy(contractABI);
 
-// 2. Unprotected function calls
-auditResults.unprotectedCalls = checkUnprotectedCalls(contractABI);
+  // 2. Unprotected function calls
+  auditResults.unprotectedCalls = checkUnprotectedCalls(contractABI);
 
-// 3. Uninitialized variables
-auditResults.uninitializedVars = checkUninitializedVars(contractCode);
+  // 3. Uninitialized variables
+  auditResults.uninitializedVars = checkUninitializedVars(contractCode);
 
-// 4. Gas inefficiencies
-auditResults.gasInefficiencies = checkGasInefficiencies(contractBytecode);
+  // 4. Gas inefficiencies
+  auditResults.gasInefficiencies = checkGasInefficiencies(contractBytecode);
 
-// 5. Unsecured use of tx.origin
-auditResults.txOrigin = checkTxOrigin(contractCode);
+  // 5. Unsecured use of tx.origin
+  auditResults.txOrigin = checkTxOrigin(contractCode);
 
-// 6. Unused variables and functions
-auditResults.unusedVarsAndFuncs = checkUnusedVarsAndFuncs(contractCode);
+  // 6. Unused variables and functions
+  auditResults.unusedVarsAndFuncs = checkUnusedVarsAndFuncs(contractCode);
 
-// 7. Outdated compiler version
-auditResults.compilerVersion = checkCompilerVersion(contractCode);
+  // 7. Outdated compiler version
+  auditResults.compilerVersion = checkCompilerVersion(contractCode);
 
-// 8. Unprotected selfdestruct
-auditResults.selfdestruct = checkSelfdestruct(contractABI);
+  // 8. Unprotected selfdestruct
+  auditResults.selfdestruct = checkSelfdestruct(contractABI);
 
-// 9. Unprotected delegatecall
-auditResults.delegatecall = checkDelegatecall(contractABI);
+  // 9. Unprotected delegatecall
+  auditResults.delegatecall = checkDelegatecall(contractABI);
 
-// 10. Unsecured use of oracles
-auditResults.oracles = checkOracles(contractCode);
+  // 10. Unsecured use of oracles
+  auditResults.oracles = checkOracles(contractCode);
 
-// 11. Unsecured use of randomness
-auditResults.randomness = checkRandomness(contractCode);
+  // 11. Unsecured use of randomness
+  auditResults.randomness = checkRandomness(contractCode);
 
-// 12. Insufficient gas
-auditResults.gas = checkGas(contractBytecode);
+  // 12. Insufficient gas
+  auditResults.gas = checkGas(contractBytecode);
 
-// 13. Unprotected use of external contracts
-auditResults.externalContracts = checkExternalContracts(contractABI);
+  // 13. Unprotected use of external contracts
+  auditResults.externalContracts = checkExternalContracts(contractABI);
 
-// 14. Unsecured use of library contracts
-auditResults.libraryContracts = checkLibraryContracts(contractABI);
+  // 14. Unsecured use of library contracts
+  auditResults.libraryContracts = checkLibraryContracts(contractABI);
 
-// 15. Unprotected use of modifiers
-auditResults.modifiers = checkModifiers(contractABI);
+  // 15. Unprotected use of modifiers
+  auditResults.modifiers = checkModifiers(contractABI);
 
-// Print the audit results
-console.log(auditResults);
+  // Print the audit results
+  console.log(auditResults);
+} else {
+  console.error("Error compiling contract code");
+}
 
 // Function to check for reentrancy vulnerability
 function checkReentrancy(abi) {
@@ -241,4 +245,4 @@ function checkModifiers(abi) {
     }
   }
   return modifierFunctions.length > 0? `Unprotected use of modifiers detected in functions: ${modifierFunctions.join(', ')}` : 'No unprotected use of modifiers detected';
-}
+         }
